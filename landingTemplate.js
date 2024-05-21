@@ -152,7 +152,7 @@ function landingTemplate(manifest) {
          <div class="separator"></div>
          <p>BTC: 1611ZefZzjWYoXLSp4zddggBY65VHXnvWG<br>
          <p>İletişim: eyup.elitass@gmail.com<br>
-         <a target='_blank' href='https://github.com/aflextr/turkcealtyazi-stremio-addon'>Github</a>
+         <a target='_blank' href='https://github.com/aflextr/turkcealtyaziorg-stremio-addon'>Github</a>
 
       </div>
       <script>
