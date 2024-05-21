@@ -10,13 +10,13 @@ This is an unofficial Stremio Addon for Turkish Subtitles from turkcealtyazi.org
 You can install it through
 
 ```sh {"id":"01HS1K9537SBFVP1Q2C1HM75A7"}
-https://bf17379232ce-turkcealtyazi-stremio-addon.baby-beamup.club
+https://bf17379232ce-turkcealtyaziorg-stremio-addon.baby-beamup.club
 ```
 
 or
 
 ```sh {"id":"01HS1K9537SBFVP1Q2C2XX2N4Q"}
-stremio://bf17379232ce-turkcealtyazi-stremio-addon.baby-beamup.club/manifest.json
+stremio://bf17379232ce-turkcealtyaziorg-stremio-addon.baby-beamup.club/manifest.json
 ```
 
 ### Local
@@ -24,7 +24,7 @@ stremio://bf17379232ce-turkcealtyazi-stremio-addon.baby-beamup.club/manifest.jso
 Download and install [Node.js](https://nodejs.org/en/download/) on your computer, then install and launch the addon from Powershell, CMD, or any kind of Terminal:
 
 ```sh {"id":"01HS1K9537SBFVP1Q2C4V6HGFQ"}
-git clone https://github.com/aflextr/turkcealtyazi-stremio-addon.git
+git clone https://github.com/aflextr/turkcealtyaziorg-stremio-addon.git
 cd turkcealtyaziorg-stremio-addon
 npm install
 npm start
