@@ -1,7 +1,7 @@
 require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const landing = require('./landingTemplate');
-//const { publishToCentral } = require('stremio-addon-sdk')
+const { publishToCentral } = require('stremio-addon-sdk')
 const app = express();
 const fs = require("fs");
 const subsrt = require("subtitle-converter");

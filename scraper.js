@@ -99,9 +99,13 @@ async function subtitlePageFinder(imdbId,type, season, episode) {
 
                     seasonNumber = Number(seasonNumber);
                     
-                    if (episodeNumber === "Paket" || episodeNumber === "paket"){
+                    if (episodeNumber === "Paket" || episodeNumber === "paket" ){
                         episodeNumber = "Paket";
-                    } else {
+                    } else if (episode <= Number(episodeNumber.split("~")[1]) && episode >= Number(episodeNumber.split("~")[0])) {
+                        episodeNumber = episode;
+                    }else if (episode <= Number(episodeNumber.split("-")[1]) && episode >= Number(episodeNumber.split("-")[0])){
+                        episodeNumber = episode;
+                    }else{
                         episodeNumber = Number(episodeNumber);
                     }
                     
@@ -121,21 +125,17 @@ async function subtitlePageFinder(imdbId,type, season, episode) {
             
             for (let i= 0; i <subtitlesData.length; i++) {
                 let subIDs = await subIDfinder(subtitlesData[i].pageUrl)
-                var url= "";
-                let idid = subIDs[0].idid
-                let altid = subIDs[0].altid
-                let sidid = subIDs[0].sidid
+                let idid = subIDs[0].idid;
+                let altid = subIDs[0].altid;
+                let sidid = subIDs[0].sidid;
+                let lang = "tur";
                 
-                let lang = "tur"
+                
                 //CHECK MOVİE OR SERİES 
-                if (isNaN(episode)) {
-                    episode = 0;
-                    url = `${process.env.HOST_URL}/download/${idid}-${sidid}-${altid}-${episode}`
-                    
-                }else{
-                    url = `${process.env.HOST_URL}/download/${idid}-${sidid}-${altid}-${episode}`
-                    
-                }
+                if (isNaN(episode)) episode = 0;
+
+                
+                var url = `${process.env.HOST_URL}/download/${idid}-${sidid}-${altid}-${episode}`;
                 
                 
                 stremioElements.push({url,lang,id:altid,episode})

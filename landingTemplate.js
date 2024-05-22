@@ -29,7 +29,7 @@ h1, h2, h3 {
 }
 
 #addon {
-   width: 400px;
+   width: 550px;
    position: absolute;
    left: 0px;
    right: 0px;
@@ -76,7 +76,9 @@ button:active {
    float: left;
    margin: 20px
 }
-
+.alert{
+   color:red;
+}
 .name {
    float: left
 }
@@ -137,6 +139,9 @@ function landingTemplate(manifest) {
             <li>Filmler</li><li>Diziler</li>
          </ul>
          </ul>
+         <div>
+            <h3 class="alert">Eğer stremioyu web sürümünde kullanıyorsanız arkada stremio hizmeti ya da uygulaması çalışması gerek.</h3>
+         </div>
          <div style="text-align:center; margin-bottom: 30px;">
             <h6>Bot Olmadığınızı Onaylayın</h6>
             <h4>Türkiye'nin başkenti neresidir?</h4>
