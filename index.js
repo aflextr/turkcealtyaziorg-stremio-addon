@@ -109,46 +109,40 @@ async function getsub(subFilePath) {
     if (fs.existsSync(subFilePath)) {
       var text = "";
       const encoding = chardet.detectFileSync(subFilePath);
-
       if (encoding != "UTF-8") {
         var buffer = fs.readFileSync(subFilePath);
         text = iconv.decode(buffer, 'win1254')
-
       }
       else {
         text = fs.readFileSync(subFilePath).toString("utf8")
       }
-
       var foundext = path.extname(subFilePath)
-
-
-      if (foundext != ".srt") {
-        if (foundext == ".ass") {
+      if (typeof (text) !== "undefined" && text != "") {
+        if (foundext == ".srt") {
+          return { text: text, ext: foundext };
+        }
+        else if (foundext == ".ass") {
           let data = ass2srt(text);
           return { text: data, ext: foundext };
         } else if (foundext == ".sub") {
-
           var data = await sub2srt(subFilePath);
           return { text: data, ext: foundext };
+        } else {
+          const outputExtension = '.srt'
+          const options = {
+            removeTextFormatting: true,
+          };
+
+          const { subtitle } = subsrt.convert(text, outputExtension, options);
+          return { text: subtitle, ext: foundext };
         }
-
-        const outputExtension = '.srt'
-        const options = {
-          removeTextFormatting: true,
-        };
-
-        const { subtitle } = subsrt.convert(text, outputExtension, options);
-        return { text: subtitle, ext: foundext };
-
-      } else {
-        return { text: text, ext: foundext };
       }
-    }
 
+
+    }
   } catch (error) {
     if (error) return console.log(error);
   }
-
 }
 
 
@@ -160,8 +154,8 @@ function CheckFolderAndFiles() {
     }
 
     const files = fs.readdirSync(folderPath);
-
-    if (files.length > 500) {
+    // Deletes subtitles after 600 subtitle files
+    if (files.length > 600) {
       files.forEach((file) => {
         const filePath = path.join(folderPath, file);
         const fileStats = fs.statSync(filePath);
@@ -169,7 +163,6 @@ function CheckFolderAndFiles() {
         if (fileStats.isFile()) {
           fs.unlinkSync(filePath);
         } else if (fileStats.isDirectory()) {
-          // Dizin içinde dosya varsa onları da silmek için
           fs.rmdirSync(filePath, { recursive: true });
         }
       });
@@ -183,16 +176,16 @@ function CheckFolderAndFiles() {
 
 async function SeriesAndMoviesCheck(altid, episode) {
   try {
-
     var returnValue = '';
+    
     var files = fs.readdirSync(path.join(__dirname, "subs", altid));
     var filess = files;
     const stats = fs.lstatSync(path.join(__dirname, "subs", altid, files[0]));
     if (stats.isDirectory()) {
       files = fs.readdirSync(path.join(__dirname, "subs", altid, files[0]));
       altid = path.join(altid, filess[0]);
-
     }
+
     for await (var value of files) {
       var checkValue = String(value).trim().toLowerCase();
       //MOVİE 
@@ -249,7 +242,7 @@ async function SubtitleAvailableCheck(altid, episode) {
       fs.rmSync(path.join(__dirname, "subs", altid + ".zip"));
     }
 
-    if (textt && typeof (textt.text) !== "undefined") {
+    if (textt && typeof (textt.text) !== "undefined" && textt.text !="") {
       return textt.text
     }
   } catch (error) {
@@ -277,7 +270,7 @@ app.get('/download/:idid\-:sidid\-:altid\-:episode', limiter, async function (re
       if (response && response.status === 200 && response.statusText === 'OK') {
         fs.writeFileSync(path.join(__dirname, "subs", req.params.altid + ".zip"), response.data, { encoding: 'utf8' })
         //extract zip
-        fs.createReadStream(path.join(__dirname, "subs", req.params.altid + ".zip")).pipe(unzipper.Extract({ path: path.join(__dirname, "subs", req.params.altid) })).on('error', (err) => console.error('Hata:', err)).on("entry", (entry) => { entry.pipe(fs.createWriteStream(entry.path, { encoding: 'utf8' })); }).on("finish", async () => {
+        fs.createReadStream(path.join(__dirname, "subs", req.params.altid + ".zip")).pipe(unzipper.Extract({ path: path.join(__dirname, "subs", req.params.altid) })).on('error', (err) => console.error('Hata:', err)).on("entry", (entry) => { entry.pipe(fs.createWriteStream(entry.path, { encoding: 'utf8' })); }).on("close", async () => {
           let checkSubtitle = await SubtitleAvailableCheck(req.params.altid, episode);
           if (checkSubtitle !== '') return res.send(checkSubtitle)
         });
