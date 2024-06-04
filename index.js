@@ -37,29 +37,18 @@ const STALE_REVALIDATE_AGE = 4 * 60 * 60; // 4 hours
 const STALE_ERROR_AGE = 7 * 24 * 60 * 60; // 7 days
 
 var respond = function (res, data) {
-  try {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', '*');
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.send(data);
-  } catch (error) {
-    console.log(error);
-  }
-
 };
 
 app.get('/', function (req, res) {
-  try {
     res.set('Content-Type', 'text/html');
     res.send(landing(MANIFEST));
-  } catch (error) {
-    console.log(error);
-  }
-
 });
 
 app.get("/:userConf?/configure", function (req, res) {
-  try {
     if (req.params.userConf !== "addon") {
       res.redirect("/addon/configure")
     } else {
@@ -67,22 +56,13 @@ app.get("/:userConf?/configure", function (req, res) {
       const newManifest = { ...MANIFEST };
       res.send(landing(newManifest));
     }
-  } catch (error) {
-    console.log(error);
-  }
-
 });
 
 app.get('/manifest.json', function (req, res) {
-  try {
     const newManifest = { ...MANIFEST };
     // newManifest.behaviorHints.configurationRequired = false;
     newManifest.behaviorHints.configurationRequired = true;
     respond(res, newManifest);
-  } catch (error) {
-    console.log(error);
-  }
-
 });
 
 app.get('/:userConf/manifest.json', function (req, res) {
@@ -98,7 +78,6 @@ app.get('/:userConf/manifest.json', function (req, res) {
   } catch (error) {
     console.log(error);
   }
-
 });
 
 
