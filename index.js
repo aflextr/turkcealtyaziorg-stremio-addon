@@ -7,7 +7,7 @@ const fs = require("fs");
 const subsrt = require("subtitle-converter");
 const iconv = require("iconv-lite");
 const unzipper = require("unzipper");
-const axios = require('axios')
+const Axios = require('axios')
 const subtitlePageFinder = require("./scraper");
 const MANIFEST = require('./manifest');
 const NodeCache = require("node-cache");
@@ -18,6 +18,14 @@ const chardet = require('chardet');
 const ass2srt = require('ass-to-srt');
 const sub2srt = require("./subtosrt");
 const sslfix = require("./sslfix");
+const axiosRetry = require("axios-retry").default;
+const { setupCache } = require("axios-cache-interceptor");
+
+
+const instance = Axios.create();
+const axios = setupCache(instance);
+axiosRetry(axios, { retries: 2 });
+
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
