@@ -274,7 +274,7 @@ app.get('/download/:idid\-:sidid\-:altid\-:episode', limiter, async function (re
 app.get('/:userConf?/subtitles/:type/:imdbId/:query?.json', limiter, async function (req, res) {
   try {
     let { type, imdbId, query } = req.params
-    let videoId = imdbId.split(":")[0]
+    let videoId = String(imdbId.split(":")[0]);
     let season = Number(imdbId.split(":")[1])
     let episode = Number(imdbId.split(":")[2])
 

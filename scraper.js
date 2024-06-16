@@ -62,7 +62,7 @@ async function subtitlePageFinder(imdbId, type, season, episode) {
 
         //GOES TO THE MAIN PAGE FOR THE MOVIE/SERIES.
         const mainPageURL = await mainPageFinder(imdbId)
-        if (mainPageURL.length > 0) {
+        if (typeof(mainPageURL) != "undefined" && mainPageURL.length > 0) {
 
             const mainPageHTML = await axios({ ...sslfix, url: mainPageURL, method: "GET", headers: header })
 
