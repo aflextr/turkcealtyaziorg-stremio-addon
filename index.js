@@ -27,14 +27,6 @@ const axios = setupCache(instance);
 axiosRetry(axios, { retries: 2 });
 
 
-const limiter = rateLimit({
-  windowMs: 25 * 60 * 1000, // 25 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 25 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-})
-
-
 
 const myCache = new NodeCache({ stdTTL: 15 * 60, checkperiod: 120 });
 
@@ -238,7 +230,7 @@ async function SubtitleAvailableCheck(altid, episode) {
 
 }
 
-app.get('/download/:idid\-:sidid\-:altid\-:episode', limiter, async function (req, res) {
+app.get('/download/:idid\-:sidid\-:altid\-:episode', async function (req, res) {
   try {
     var episode = req.params.episode;
 
@@ -271,7 +263,7 @@ app.get('/download/:idid\-:sidid\-:altid\-:episode', limiter, async function (re
 
 });
 
-app.get('/:userConf?/subtitles/:type/:imdbId/:query?.json', limiter, async function (req, res) {
+app.get('/:userConf?/subtitles/:type/:imdbId/:query?.json', async function (req, res) {
   try {
     let { type, imdbId, query } = req.params
     let videoId = String(imdbId.split(":")[0]);
@@ -283,7 +275,7 @@ app.get('/:userConf?/subtitles/:type/:imdbId/:query?.json', limiter, async funct
     } else {
       const subtitles = await subtitlePageFinder(videoId, type, season, episode);
       if (subtitles.length > 0) {
-        myCache.set(req.params.imdbId, { subtitles: subtitles, cacheMaxAge: CACHE_MAX_AGE, staleRevalidate: STALE_REVALIDATE_AGE, staleError: STALE_ERROR_AGE }, 15 * 60) // 15 mins
+        myCache.set(req.params.imdbId, { subtitles: subtitles, cacheMaxAge: CACHE_MAX_AGE, staleRevalidate: STALE_REVALIDATE_AGE, staleError: STALE_ERROR_AGE }, 45 * 60) // 45 mins
         respond(res, { subtitles: subtitles, cacheMaxAge: CACHE_MAX_AGE, staleRevalidate: STALE_REVALIDATE_AGE, staleError: STALE_ERROR_AGE });
       } else {
         myCache.set(req.params.imdbId, { subtitles: subtitles }, 2 * 60) // 2 mins
