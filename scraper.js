@@ -138,7 +138,7 @@ async function subtitlePageFinder(imdbId, type, season, episode) {
 
 
                 //CHECK MOVİE OR SERİES 
-                if (isNaN(episode)) episode = 0;
+                if (isNaN(episode)) episode = "movie-0";
 
 
                 var url = `${process.env.HOST_URL}/download/${idid}-${sidid}-${altid}-${episode}`;

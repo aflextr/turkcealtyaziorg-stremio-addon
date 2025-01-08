@@ -164,11 +164,11 @@ async function SeriesAndMoviesCheck(altid, episode) {
       files = fs.readdirSync(path.join(__dirname, "subs", altid, files[0]));
       altid = path.join(altid, filess[0]);
     }
-
+    files = files.filter(e =>path.extname(e) !== "txt");
     for await (var value of files) {
       var checkValue = String(value).trim().toLowerCase();
       //MOVİE 
-      if (episode == 0) {
+      if (episode == "movie-0") {
         returnValue = path.join(__dirname, "subs", altid, value);
         break;
       }
@@ -184,12 +184,14 @@ async function SeriesAndMoviesCheck(altid, episode) {
       else if (checkValue.includes("_" + episode + "_")) {
         returnValue = path.join(__dirname, "subs", altid, value);
         break;
-
+      }
+      else if (checkValue.includes("-" + episode)) {
+        returnValue = path.join(__dirname, "subs", altid, value);
+        break;
       }
       else if (checkValue.includes("x" + episode)) {
         returnValue = path.join(__dirname, "subs", altid, value);
         break;
-
       }
       else if (checkValue.includes(episode)) {
         returnValue = path.join(__dirname, "subs", altid, value);
