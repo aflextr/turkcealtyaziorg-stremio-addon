@@ -1,10 +1,11 @@
 require("dotenv").config({path:"./.env"});
 const scrapeCookie = require("./scrapeProxyCookie");
 scrapeCookie.fetchWithCookies(process.env.PROXY_URL).then((value)=>{
-    if (value) {
-        header.Cookie = value;
+    if (value.data.length > 10) {
+        header.Cookie = value.data;
     }
 })
+
 var header = {
     "Accept-Language":"tr,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
     "Sec-Ch-Ua-Platform":"Windows",

@@ -15,7 +15,6 @@
     "ass-to-srt": "^1.2.1",
     "axios": "^1.7.2",
     "axios-cache-interceptor": "^1.5.3",
-    "axios-cookiejar-support": "^5.0.5",
     "axios-retry": "^4.3.0",
     "chardet": "^2.0.0",
     "cheerio": "^1.0.0-rc.5",
@@ -27,7 +26,6 @@
     "node-cache": "^5.1.2",
     "stremio-addon-sdk": "^1.6.10",
     "subtitle-converter": "^3.0.12",
-    "tough-cookie": "^5.1.0",
     "unzipper": "^0.10.14"
   }
 }
