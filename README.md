@@ -10,13 +10,13 @@ This is an unofficial Stremio Addon for Turkish Subtitles from turkcealtyazi.org
 You can install it through
 
 ```sh {"id":"01HS1K9537SBFVP1Q2C1HM75A7"}
-https://bf17379232ce-turkcealtyaziorg-stremio-addon.baby-beamup.club
+https://animecix-stremio-addon.mycodelab.live/
 ```
 
 or
 
 ```sh {"id":"01HS1K9537SBFVP1Q2C2XX2N4Q"}
-stremio://bf17379232ce-turkcealtyaziorg-stremio-addon.baby-beamup.club/manifest.json
+stremio://animecix-stremio-addon.mycodelab.live/manifest.json
 ```
 
 ### Local
