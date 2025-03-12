@@ -28,7 +28,7 @@ axiosRetry(axios, { retries: 2 });
 
 
 
-const myCache = new NodeCache({ stdTTL: 15 * 60, checkperiod: 120 });
+const myCache = new NodeCache({ stdTTL: 30 * 60, checkperiod: 300 });
 
 
 
@@ -40,7 +40,7 @@ var respond = function (res, data) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', '*');
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
-    res.send(data);
+    return res.send(data);
 };
 
 app.get('/', function (req, res) {
@@ -251,7 +251,7 @@ app.get('/download/:idid\-:sidid\-:altid\-:episode', async function (req, res) {
       if (response && response.status === 200 && response.statusText === 'OK') {
         fs.writeFileSync(path.join(__dirname, "subs", req.params.altid + ".zip"), response.data, { encoding: 'utf8' })
         //extract zip
-        fs.createReadStream(path.join(__dirname, "subs", req.params.altid + ".zip")).pipe(unzipper.Extract({ path: path.join(__dirname, "subs", req.params.altid) })).on('error', (err) => console.error('Hata:', err)).on("entry", (entry) => { entry.pipe(fs.createWriteStream(entry.path, { encoding: 'utf8' })); }).on("close", async () => {
+        fs.createReadStream(path.join(__dirname, "subs", req.params.altid + ".zip")).pipe(unzipper.Extract({ path: path.join(__dirname, "subs", req.params.altid) })).on('error', (err) => console.error('Hata:', err.message)).on("entry", (entry) => { entry.pipe(fs.createWriteStream(entry.path, { encoding: 'utf8' })); }).on("close", async () => {
           let checkSubtitle = await SubtitleAvailableCheck(req.params.altid, episode);
           if (checkSubtitle !== '') return res.send(checkSubtitle)
         });
@@ -299,7 +299,8 @@ app.get('*', function (req, res) {
 if (module.parent) {
   module.exports = app;
 } else {
-  app.listen(process.env.PORT || 7000, function () {
+  app.listen(process.env.PORT || 7000, function (err) {
+    if (err) return console.error("Error "+err);
     console.log(`extension running port : ${process.env.PORT}`)
   });
 }
