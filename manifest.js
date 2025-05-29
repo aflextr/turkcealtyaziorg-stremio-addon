@@ -10,5 +10,5 @@ module.exports={
     resources: ["subtitles"],
     catalogs: [],
     idPrefixes: ["tt"],
-    behaviorHints:{configurable : true, configurationRequired: true }
+    behaviorHints:{configurable : false, configurationRequired: true }
 };
