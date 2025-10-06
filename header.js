@@ -1,10 +1,28 @@
 require("dotenv").config({path:"./.env"});
 const scrapeCookie = require("./scrapeProxyCookie");
-scrapeCookie.fetchWithCookies(process.env.PROXY_URL).then((value)=>{
+
+var count = 0;
+function FetchCookie() {
+    scrapeCookie.fetchWithCookies(process.env.PROXY_URL).then((value)=>{
     if (value.data.length > 10) {
-        header.Cookie = value.data;
+        if(value.status == true)
+        {
+            header.Cookie = value.data;
+        }
+        else{
+            count++;
+            if (count == 3) {
+                return;
+            }
+            FetchCookie()
+        }
     }
 })
+}
+
+FetchCookie()
+
+
 
 var header = {
     "Accept-Language":"tr,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
