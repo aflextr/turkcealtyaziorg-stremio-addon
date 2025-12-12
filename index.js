@@ -18,13 +18,11 @@ const chardet = require('chardet');
 const ass2srt = require('ass-to-srt');
 const sub2srt = require("./subtosrt");
 const sslfix = require("./sslfix");
-const axiosRetry = require("axios-retry").default;
 const { setupCache } = require("axios-cache-interceptor");
 
 
 const instance = Axios.create();
 const axios = setupCache(instance);
-axiosRetry(axios, { retries: 2 });
 
 
 

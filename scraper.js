@@ -3,13 +3,11 @@ const header = require("./header")
 const cheerio = require('cheerio');
 require("dotenv").config({ path: "./.env" });
 const sslfix = require("./sslfix");
-const axiosRetry = require("axios-retry").default;
 const { setupCache } = require("axios-cache-interceptor");
 
 
 const instance = Axios.create();
 const axios = setupCache(instance);
-axiosRetry(axios, { retries: 2 });
 
 async function mainPageFinder(imdbId) {
     try {
