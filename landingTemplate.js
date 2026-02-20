@@ -155,7 +155,7 @@ function landingTemplate(manifest) {
          <div class="separator"></div>
          <p>TurkceAltyazi.org yurtdışından erişimde CloudFlare ile korunduğundan bu eklentinin çeşitli maliyetleri olmaktadır. Bu maliyetleri ne kadar uzun süre karşılayabilirim bilemediğimden yapacağınız en küçük bağış eklentinin hayatta kalabilmesi için faydalı olacaktır.<br>
          <div class="separator"></div>
-         <p>IBAN: TR05 0006 2000 6800 0006 6257 26  Eyüp Elitaş</p>
+         <p><a href="https://www.buymeacoffee.com/mycodelab" target="_blank" style="color: white;">Buy Me A Coffee</a></p>
          <p>İletişim: eyup.elitass@gmail.com</p>
          <a target='_blank' href='https://github.com/aflextr/turkcealtyaziorg-stremio-addon'>Github</a>
          <a target='_blank' href='https://raw.githubusercontent.com/aflextr/donated-to-me/refs/heads/main/donate'><h4>Bağış yapanlara teşekkür ederim.</h4></a>

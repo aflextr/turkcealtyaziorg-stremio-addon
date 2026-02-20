@@ -46,37 +46,36 @@ app.get('/', function (req, res) {
     res.send(landing(MANIFEST));
 });
 
-app.get("/:userConf?/configure", function (req, res) {
-    if (req.params.userConf !== "addon") {
-      res.redirect("/addon/configure")
-    } else {
-      res.set('Content-Type', 'text/html');
-      const newManifest = { ...MANIFEST };
-      res.send(landing(newManifest));
-    }
-});
+app.get('/configure', function (req, res) {
+    res.set('Content-Type', 'text/html');
+    const newManifest = { ...MANIFEST };
+    res.send(landing(newManifest));
+})
 
 app.get('/manifest.json', function (req, res) {
     const newManifest = { ...MANIFEST };
-    // newManifest.behaviorHints.configurationRequired = false;
+    newManifest.behaviorHints.configurable = true;
     newManifest.behaviorHints.configurationRequired = true;
-    respond(res, newManifest);
+    return respond(res, newManifest);
 });
 
 app.get('/:userConf/manifest.json', function (req, res) {
-  try {
-    const newManifest = { ...MANIFEST };
-    if (!((req || {}).params || {}).userConf) {
-      newManifest.behaviorHints.configurationRequired = true;
-      respond(res, newManifest);
-    } else {
-      newManifest.behaviorHints.configurationRequired = false;
-      respond(res, newManifest);
+    try {
+        const newManifest = { ...MANIFEST };
+        if (!((req || {}).params || {}).userConf) return;
+
+        if (req.params.userConf === "configure") {
+           return respond(res, newManifest);
+        }else if (req.params.userConf === "addon") {
+            newManifest.behaviorHints.configurable = true;
+            newManifest.behaviorHints.configurationRequired = false;
+            return respond(res, newManifest);
+        }
+    } catch (error) {
+        console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
 });
+
 
 
 
