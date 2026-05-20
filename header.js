@@ -1,27 +1,4 @@
 require("dotenv").config({path:"./.env"});
-const scrapeCookie = require("./scrapeProxyCookie");
-
-var count = 0;
-function FetchCookie() {
-    scrapeCookie.fetchWithCookies(process.env.PROXY_URL).then((value)=>{
-    if (value.data.length > 10) {
-        if(value.status == true)
-        {
-            header.Cookie = value.data;
-        }
-        else{
-            count++;
-            if (count == 3) {
-                return;
-            }
-            FetchCookie()
-        }
-    }
-})
-}
-
-FetchCookie()
-
 
 
 var header = {

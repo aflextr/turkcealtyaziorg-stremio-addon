@@ -243,7 +243,7 @@ app.get('/download/:idid\-:sidid\-:altid\-:episode', async function (req, res) {
       let checkSubtitle = await SubtitleAvailableCheck(req.params.altid, episode);
       if (checkSubtitle !== '') return res.send(checkSubtitle)
     } else {
-      var response = await axios({ ...sslfix, url: process.env.PROXY_URL + '/ind', method: "POST", headers: header, data: `idid=${req.params.idid}&altid=${req.params.altid}&sidid=${req.params.sidid}`, responseType: 'arraybuffer', responseEncoding: 'utf8' });
+      var response = await axios({url: process.env.PROXY_URL + '/ind', method: "POST", headers: header, data: `idid=${req.params.idid}&altid=${req.params.altid}&sidid=${req.params.sidid}`, responseType: 'arraybuffer', responseEncoding: 'utf8' });
 
       if (response && response.status === 200 && response.statusText === 'OK') {
         fs.writeFileSync(path.join(__dirname, "subs", req.params.altid + ".zip"), response.data, { encoding: 'utf8' })

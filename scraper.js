@@ -9,18 +9,44 @@ const { setupCache } = require("axios-cache-interceptor");
 const instance = Axios.create();
 const axios = setupCache(instance);
 
+function parseSearchResults(data) {
+    if (Array.isArray(data)) {
+        return data;
+    }
+
+    if (typeof data === "string") {
+        try {
+            const parsed = JSON.parse(data);
+            return Array.isArray(parsed) ? parsed : [parsed];
+        } catch (error) {
+            const matchedJson = data.match(/\[\s*\{[\s\S]*\}\s*\]/);
+            if (matchedJson) {
+                try {
+                    const parsed = JSON.parse(matchedJson[0]);
+                    return Array.isArray(parsed) ? parsed : [parsed];
+                } catch (parseError) {
+                    return [];
+                }
+            }
+        }
+    }
+
+    return [];
+}
+
 async function mainPageFinder(imdbId) {
     try {
         var editedId = imdbId.substring(2);
 
-        const response = await axios({ ...sslfix, url: process.env.PROXY_URL + `/things_.php?t=99&term=${editedId}`, method: "GET", headers: header })
+        const response = await axios({url: process.env.PROXY_URL + `/things_.php?t=99&term=${editedId}`, method: "GET", headers: header })
+
+        const mainPageData = parseSearchResults(response.data)[0];
 
 
-        if (response.status === 200) {
-            const mainPageURL = process.env.PROXY_URL + response.data[0].url
-            return mainPageURL
+        if (response.status === 200 && mainPageData && mainPageData.url) {
+            return process.env.PROXY_URL + mainPageData.url
         } else {
-            return mainPageURL = ""
+            return ""
         }
     } catch (error) {
         console.log("mainPageFinder not found", error);
@@ -31,13 +57,13 @@ async function subIDfinder(subLink) {
     try {
 
 
-        const response = await axios({ ...sslfix, url: subLink, method: "GET", headers: header });
+        const response = await axios({url: subLink, method: "GET", headers: header });
 
 
         $ = cheerio.load(response.data)
         let subIDs = []
 
-        $('form[action="/ind"] > div').each((i, section) => {
+        $('form[action$="/ind"] > div').each((i, section) => {
             let idid = $(section).children('input[name="idid"]').attr('value')
             let altid = $(section).children('input[name="altid"]').attr('value')
             let sidid = $(section).children('input[name="sidid"]').attr('value')
@@ -62,7 +88,7 @@ async function subtitlePageFinder(imdbId, type, season, episode) {
         const mainPageURL = await mainPageFinder(imdbId)
         if (typeof(mainPageURL) != "undefined" && mainPageURL.length > 0) {
 
-            const mainPageHTML = await axios({ ...sslfix, url: mainPageURL, method: "GET", headers: header })
+            const mainPageHTML = await axios({url: mainPageURL, method: "GET", headers: header })
 
 
             $ = cheerio.load(mainPageHTML.data)
@@ -116,7 +142,7 @@ async function subtitlePageFinder(imdbId, type, season, episode) {
                     if (subLang === "flagtr" && subPageURL !== undefined && season === seasonNumber) {
 
                         if (episode === episodeNumber || episodeNumber === "Paket") {
-                            subPageURL = process.env.PROXY_URL + subPageURL
+                            subPageURL = subPageURL
                             subLang = subLang.substring(4)
                             subtitlesData.push({ lang: subLang, pageUrl: subPageURL, season: seasonNumber, episode: episodeNumber })
                         }
